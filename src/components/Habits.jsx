@@ -4,8 +4,8 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import "react-toastify/dist/ReactToastify.css";
+import PropTypes from "prop-types";
 
 import {
   BoxContainer,
@@ -18,6 +18,7 @@ import {
   WeakdayBox,
 } from "./HabitStyle";
 import { ToastContainer, toast } from "react-toastify";
+import { TimePicker } from "@mui/x-date-pickers";
 
 const weak = [
   "Monday",
@@ -31,9 +32,10 @@ const weak = [
 
 const Habits = () => {
   const [change, setChange] = useState("");
-  const [time, setTime] = useState(dayjs());
+  const [time, setTime] = useState(dayjs().format("HH:mm"));
   const [weekday, setWeekday] = useState("");
   const [addHabits, setAddHabits] = useState([]);
+  const [selectedHours, selectedMinutes] = time.split(":").map(Number);
 
   const handleOnChange = (e) => {
     setChange(e.target.value);
@@ -41,28 +43,26 @@ const Habits = () => {
 
   const handleAddHabits = () => {
     if (change.trim() !== "" && time !== "" && weekday !== "") {
-      // Check if the selected date is not in the past
-      if (time.isBefore(dayjs(), "minute")) {
-        toast.error("Please select a current or future date.");
+      // Parse the current time and selected time
+      const currentTime = dayjs(time, "HH:mm");
+      const selectedTime = dayjs(time, "HH:mm");
+
+      if (selectedTime.isBefore(currentTime, "minute")) {
+        toast.error("Please select a current or future time.");
         return;
       }
-
       setAddHabits((prevHabits) => {
         toast.success("Your habit added successfully");
         const newHabits = [
           ...prevHabits,
           {
             habit: change,
-            time: time.format("YYYY-MM-DD HH:mm"),
+            time: selectedTime.format("HH:mm"),
             weekday,
           },
         ];
         return newHabits;
       });
-
-      setChange("");
-      setTime(dayjs());
-      setWeekday("");
     }
   };
 
@@ -132,10 +132,12 @@ const Habits = () => {
             />
             <Box sx={{ marginTop: "20px" }}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateTimePicker
-                  label="Select Date & Time"
-                  value={time}
-                  onChange={(newValue) => setTime(newValue)}
+                <TimePicker
+                  label="Time"
+                  value={dayjs().hour(selectedHours).minute(selectedMinutes)}
+                  onChange={(newTime) => {
+                    setTime(newTime.format("HH:mm"));
+                  }}
                 />
               </LocalizationProvider>
             </Box>
@@ -199,6 +201,12 @@ const Habits = () => {
       </RightContainer>
     </BoxContainer>
   );
+};
+
+Habits.propTypes = {
+  habit: PropTypes.string.isRequired,
+  time: PropTypes.string.isRequired,
+  weekday: PropTypes.string.isRequired,
 };
 
 export default Habits;
