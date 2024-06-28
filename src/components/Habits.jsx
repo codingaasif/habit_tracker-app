@@ -5,7 +5,6 @@ import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "react-toastify/dist/ReactToastify.css";
-import PropTypes from "prop-types";
 
 import {
   BoxContainer,
@@ -201,12 +200,6 @@ const Habits = () => {
       </RightContainer>
     </BoxContainer>
   );
-};
-
-Habits.propTypes = {
-  habit: PropTypes.string.isRequired,
-  time: PropTypes.string.isRequired,
-  weekday: PropTypes.string.isRequired,
 };
 
 export default Habits;
