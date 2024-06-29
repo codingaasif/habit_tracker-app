@@ -99,8 +99,5 @@ export const InputBox = styled(Box)(({ theme }) => ({
   padding: "20px",
   borderRadius: "10px",
   backgroundColor: "#fff",
-  // border: "1px solid #000",
-  [theme.breakpoints.down("lg")]: {
-    // width: "100%",
-  },
+  [theme.breakpoints.down("lg")]: {},
 }));

@@ -66,8 +66,9 @@ const Habits = () => {
   };
 
   const handleCancelHabits = () => {
+    alert("Are you sure you want to cancel?");
     setChange("");
-    setTime(dayjs());
+    setTime(dayjs().format("HH:mm"));
     setWeekday("");
     setAddHabits([]);
   };
