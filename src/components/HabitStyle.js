@@ -24,6 +24,7 @@ export const InnerContainer = styled(Box)({
   justifyContent: "space-between",
   alignItems: "center",
   gap: "10px",
+  width: "100%",
 });
 
 export const LeftContainer = styled(Box)(({ theme }) => ({
